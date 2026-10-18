@@ -316,3 +316,15 @@ tbody tr:hover {
     align-self: flex-start;
   }
 }
+
+
+.priority-label { font-weight: 750; }
+.priority-high { color: #7a1717; background: #fff0e8; }
+.overdue-label { display: block; color: var(--danger); font-weight: 800; }
+.field-error { margin: 0; color: var(--danger); }
+[aria-invalid="true"] { border-color: var(--danger); }
+#request-filters { margin-bottom: 1.25rem; }
+#history { margin-top: 1.5rem; }
+summary { cursor: pointer; font-weight: 750; }
+summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+td button { display: block; margin-bottom: 0.5rem; }
