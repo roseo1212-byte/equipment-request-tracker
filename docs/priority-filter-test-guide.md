@@ -54,3 +54,5 @@ seed local storage in that test profile or let a request's date pass.
 - styles.css: focused styling for urgency, errors, actions, and history.
 - tests/priority-filter.test.js: business and storage regression coverage.
 - docs/priority-filter-test-guide.md: this verification guide.
+
+History sorting check: resolve two requests in sequence; the latest action appears first. Older undated entries appear last. Matching action dates use newest submission first. Automated coverage is in the history sorting test.

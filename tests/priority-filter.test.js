@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   createRequest, localDate, isOverdue, selectRequests, validateFilters,
-  resolveRequest, loadRequests, saveRequests, STORAGE_KEY, requestStatus,
+  resolveRequest, selectHistory, loadRequests, saveRequests, STORAGE_KEY, requestStatus,
 } from "../src/request-store.js";
 
 const today = "2026-10-17";
@@ -14,6 +14,26 @@ function request(id, overrides = {}) {
   }, { id, now: new Date(overrides.createdAt ?? "2026-10-01T12:00:00Z") });
 }
 const ids = (records) => records.map(record => record.id);
+
+test("history sorts newest action first, undated last, with newest submission breaking ties", () => {
+  const records = [
+    { ...request("undated-old"), status: "fulfilled" },
+    { ...request("old-action"), status: "canceled", resolvedAt: "2026-10-17T12:00:00Z" },
+    { ...request("new-action-old-submission"), status: "fulfilled", resolvedAt: "2026-10-18T12:00:00Z" },
+    { ...request("new-action-new-submission", { createdAt: "2026-10-02T12:00:00Z" }), status: "canceled", resolvedAt: "2026-10-18T12:00:00Z" },
+    { ...request("undated-new", { createdAt: "2026-10-03T12:00:00Z" }), status: "canceled" },
+    { ...request("invalid-date", { createdAt: "2026-10-02T12:00:00Z" }), status: "fulfilled", resolvedAt: "invalid" },
+    request("active"),
+  ];
+  const before = structuredClone(records);
+  assert.deepEqual(ids(selectHistory(records)), [
+    "new-action-new-submission", "new-action-old-submission", "old-action",
+    "undated-new", "invalid-date", "undated-old",
+  ]);
+  assert.deepEqual(records, before);
+  const tied = { ...records[0], id: "exact-tie" };
+  assert.deepEqual(ids(selectHistory([records[0], tied])), ["undated-old", "exact-tie"]);
+});
 
 test("AC 1-3: date, priority, submission time, then stable ties; source is unchanged", () => {
   const records = [

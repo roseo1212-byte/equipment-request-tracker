@@ -109,6 +109,23 @@ export function resolveRequest(requests, id, status, now = new Date()) {
       ? { ...request, status, resolvedAt: now.toISOString() } : request);
 }
 
+export function selectHistory(requests) {
+  const timestamp = (value) => {
+    const time = Date.parse(value);
+    return Number.isFinite(time) ? time : -Infinity;
+  };
+  return requests
+    .filter((request) => ["fulfilled", "canceled"].includes(requestStatus(request)))
+    .sort((a, b) => {
+      const actionA = timestamp(a.resolvedAt);
+      const actionB = timestamp(b.resolvedAt);
+      if (actionA !== actionB) return actionA > actionB ? -1 : 1;
+      const submittedA = timestamp(a.createdAt);
+      const submittedB = timestamp(b.createdAt);
+      return submittedA === submittedB ? 0 : submittedA > submittedB ? -1 : 1;
+    });
+}
+
 export function loadRequests(storage = globalThis.localStorage) {
   if (!storage) return [];
 

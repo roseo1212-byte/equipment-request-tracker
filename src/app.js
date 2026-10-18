@@ -4,7 +4,7 @@ import {
   createRequest,
   loadRequests,
   saveRequests,
-  localDate, isOverdue, requestStatus, selectRequests, validateFilters, resolveRequest,
+  localDate, isOverdue, requestStatus, selectRequests, selectHistory, validateFilters, resolveRequest,
 } from "./request-store.js";
 
 const form = document.querySelector("#request-form");
@@ -88,7 +88,7 @@ function renderRequests() {
   emptyState.querySelector('p').textContent = active.length ? 'Clear filters to show all active requests.' : 'Add an equipment request using the form.';
   tableWrapper.hidden = visible.length === 0;
   tableBody.replaceChildren(...visible.map(request => createRequestRow(request)));
-  const history = requests.filter(request => ['fulfilled', 'canceled'].includes(requestStatus(request)));
+  const history = selectHistory(requests);
   document.querySelector('#history-empty').hidden = history.length > 0;
   document.querySelector('#history-table-wrapper').hidden = history.length === 0;
   document.querySelector('#history-table-body').replaceChildren(...history.map(request => createRequestRow(request, true)));

@@ -21,7 +21,7 @@ Managers need a faster way to focus on equipment requests that need attention. T
 9. Initially show all active requests. Provide "Clear filters" to reset filters and search and show all active requests again.
 10. When active requests exist but none match, display "No matching requests." When there are no active requests, display "No active requests."
 11. Each active request has "Mark fulfilled" and "Cancel request" buttons. Either action removes it from the attention list and stores it in history with the appropriate status, retaining its original request information.
-12. Provide a history view that identifies fulfilled and canceled requests. Record the action timestamp when an active request is fulfilled or canceled and display it in local date and time as "Fulfilled on" or "Canceled on." Existing history without a timestamp displays "Date not recorded"; do not invent historical dates. Status, timestamps, and history persist after page refresh. History search is out of scope.
+12. Provide a history view that identifies fulfilled and canceled requests. Record the action timestamp when an active request is fulfilled or canceled and display it in local date and time as "Fulfilled on" or "Canceled on." Existing history without a timestamp displays "Date not recorded"; do not invent historical dates. Status, timestamps, and history persist after page refresh. Sort history by newest action timestamp first, with missing or invalid action dates last. Break matching action timestamps, including missing dates, by newest submission first. Exact ties retain their existing relative order. History search is out of scope.
 13. Require requester name, department, equipment, a valid needed-by date, business reason, and a priority of High, Normal, or Low. Prevent incomplete submissions and identify the fields requiring attention. Preserve the existing Normal default.
 14. Allow duplicate requests because similar requests may represent separate needs.
 16. Unavailable equipment does not automatically remove a request from the attention list. The request remains active for manager follow-up.
@@ -53,7 +53,7 @@ The date-range and search-matching details above are specification defaults used
 10. A search or filter combination with no matches displays "No matching requests." Clearing filters restores all active requests in the specified order without changing stored data.
 11. Selecting "Mark fulfilled" removes that request from the attention list and shows it in history as fulfilled with its original information.
 12. Selecting "Cancel request" removes that request from the attention list and shows it in history as canceled with its original information.
-13. After refreshing, active requests, their statuses, and history remain available and correct. Newly fulfilled/canceled requests show the appropriate action date and time, unchanged after refresh. Existing history without an action timestamp shows "Date not recorded." Resolving another request must not change earlier timestamps.
+13. After refreshing, active requests, their statuses, and history remain available and correct. Newly fulfilled/canceled requests show the appropriate action date and time, unchanged after refresh. Existing history without an action timestamp shows "Date not recorded." Resolving another request must not change earlier timestamps. Verify newest actions appear first, undated entries appear last, and submission time descending breaks ties.
 14. Missing required information prevents submission and produces field-specific guidance. Duplicate valid requests can both be submitted.
 15. An active request for unavailable equipment remains visible unless a manager fulfills or cancels it; no availability lookup is required.
 16. Existing stored requests remain readable and retain their information, with Normal priority or active status supplied when those fields are absent.
@@ -70,4 +70,5 @@ The date-range and search-matching details above are specification defaults used
 - Reopening, editing, or permanently deleting fulfilled or canceled requests.
 - Shared server storage, cross-device synchronization, and multi-user collaboration.
 - Unrelated interface redesign.
+
 
