@@ -16,6 +16,19 @@ const tableWrapper = document.querySelector("#request-table-wrapper");
 const tableBody = document.querySelector("#request-table-body");
 
 const filtersForm = document.querySelector('#request-filters');
+const viewButtons = [
+  [document.querySelector("#show-new-request"), document.querySelector("#new-request-view")],
+  [document.querySelector("#show-workload"), document.querySelector("#workload-view")],
+];
+for (const [button, panel] of viewButtons) {
+  button.addEventListener("click", () => {
+    for (const [otherButton, otherPanel] of viewButtons) {
+      const selected = otherPanel === panel;
+      otherPanel.hidden = !selected;
+      otherButton.setAttribute("aria-pressed", String(selected));
+    }
+  });
+}
 let requests = loadRequests();
 filtersForm.addEventListener('submit', event => event.preventDefault());
 filtersForm.addEventListener('input', renderRequests);
