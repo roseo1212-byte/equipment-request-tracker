@@ -22,7 +22,11 @@
     </header>
 
     <main class="shell app-layout">
-      <section class="card request-card" aria-labelledby="request-form-title">
+      <nav class="view-switcher" aria-label="Request views">
+        <button type="button" id="show-new-request" aria-controls="new-request-view" aria-pressed="false">New request</button>
+        <button type="button" id="show-workload" aria-controls="workload-view" aria-pressed="true">Current workload</button>
+      </nav>
+      <section id="new-request-view" class="card request-card" aria-labelledby="request-form-title" hidden>
         <div class="section-heading">
           <p class="step-label">New request</p>
           <h2 id="request-form-title">Request equipment</h2>
@@ -94,7 +98,7 @@
         </form>
       </section>
 
-      <section class="card list-card" aria-labelledby="request-list-title">
+      <section id="workload-view" class="card list-card" aria-labelledby="request-list-title">
         <div class="list-heading">
           <div>
             <p class="step-label">Current workload</p>
@@ -103,6 +107,17 @@
           <p id="request-count" class="request-count">0 requests</p>
         </div>
 
+        <form id="request-filters" aria-label="Filter requests">
+          <div class="field-grid">
+            <div class="field"><label for="filter-priority">Priority filter</label><select id="filter-priority" name="priority"><option value="">All</option><option>High</option><option>Normal</option><option>Low</option></select></div>
+            <div class="field"><label for="filter-overdue">Overdue status</label><select id="filter-overdue" name="overdue"><option value="">All</option><option value="overdue">Overdue</option><option value="not-overdue">Not overdue</option></select></div>
+            <div class="field"><label for="filter-start">Needed by: start date</label><input id="filter-start" name="start" type="date" aria-describedby="filter-message"></div>
+            <div class="field"><label for="filter-end">Needed by: end date</label><input id="filter-end" name="end" type="date" aria-describedby="filter-message"></div>
+          </div>
+          <div class="field"><label for="filter-search">Search requester or equipment</label><input id="filter-search" name="search" type="search"></div>
+          <button type="reset">Clear filters</button><p id="filter-message" class="form-message error" role="status"></p>
+        </form>
+        <p id="action-message" role="status" aria-live="polite"></p>
         <div id="empty-state" class="empty-state">
           <h3>No requests yet</h3>
           <p>Add the first equipment request using the form.</p>
@@ -119,12 +134,17 @@
                 <th scope="col">Priority</th>
                 <th scope="col">Needed by</th>
                 <th scope="col">Business reason</th>
-                <th scope="col">Submitted</th>
+                <th scope="col">Submitted</th><th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody id="request-table-body"></tbody>
           </table>
         </div>
+        <details id="history"><summary>Request history</summary><p id="history-empty">No history yet.</p>
+          <div id="history-table-wrapper" class="table-wrapper" hidden><table><caption class="sr-only">Fulfilled and canceled requests</caption>
+            <thead><tr><th scope="col">Requester</th><th scope="col">Department</th><th scope="col">Equipment</th><th scope="col">Priority</th><th scope="col">Needed by</th><th scope="col">Business reason</th><th scope="col">Submitted</th><th scope="col">Status</th><th scope="col">Action date and time</th></tr></thead>
+            <tbody id="history-table-body"></tbody></table></div>
+        </details>
       </section>
     </main>
 
@@ -137,3 +157,4 @@
     <script type="module" src="src/app.js"></script>
   </body>
 </html>
+
