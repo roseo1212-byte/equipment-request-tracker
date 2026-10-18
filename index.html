@@ -22,7 +22,11 @@
     </header>
 
     <main class="shell app-layout">
-      <section class="card request-card" aria-labelledby="request-form-title">
+      <nav class="view-switcher" aria-label="Request views">
+        <button type="button" id="show-new-request" aria-controls="new-request-view" aria-pressed="false">New request</button>
+        <button type="button" id="show-workload" aria-controls="workload-view" aria-pressed="true">Current workload</button>
+      </nav>
+      <section id="new-request-view" class="card request-card" aria-labelledby="request-form-title" hidden>
         <div class="section-heading">
           <p class="step-label">New request</p>
           <h2 id="request-form-title">Request equipment</h2>
@@ -94,7 +98,7 @@
         </form>
       </section>
 
-      <section class="card list-card" aria-labelledby="request-list-title">
+      <section id="workload-view" class="card list-card" aria-labelledby="request-list-title">
         <div class="list-heading">
           <div>
             <p class="step-label">Current workload</p>
