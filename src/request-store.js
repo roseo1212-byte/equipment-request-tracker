@@ -102,11 +102,11 @@ export function selectRequests(requests, filters = {}, today = localDate()) {
   );
 }
 
-export function resolveRequest(requests, id, status) {
+export function resolveRequest(requests, id, status, now = new Date()) {
   if (!["fulfilled", "canceled"].includes(status)) throw new Error("Invalid status.");
   return requests.map((request) =>
     request.id === id && requestStatus(request) === "active"
-      ? { ...request, status } : request);
+      ? { ...request, status, resolvedAt: now.toISOString() } : request);
 }
 
 export function loadRequests(storage = globalThis.localStorage) {

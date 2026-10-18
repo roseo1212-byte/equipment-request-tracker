@@ -134,6 +134,14 @@ function createRequestRow(request, history = false) {
     actions.append(button);
   }
   row.append(actions);
+  if (history) {
+    const timestamp = document.createElement("td");
+    const validTimestamp = request.resolvedAt && !Number.isNaN(new Date(request.resolvedAt).getTime());
+    timestamp.textContent = validTimestamp
+      ? (requestStatus(request) === "fulfilled" ? "Fulfilled on: " : "Canceled on: ") + formatDateTime(request.resolvedAt)
+      : "Date not recorded";
+    row.append(timestamp);
+  }
   return row;
 }
 

@@ -7,7 +7,7 @@
 3. Preserve the existing storage key and request fields; absent status means active.
 4. Test business/storage behavior and verify the interface in a browser.
 
-No completion timestamps were added because the saved specification does not require them.
+Action timestamps are now required: fulfill and cancel a fresh request, verify the local action date/time in history, and refresh to confirm it stays unchanged. Existing history shows "Date not recorded." History search is excluded.
 
 ## Automated results
 

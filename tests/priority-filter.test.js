@@ -74,10 +74,12 @@ test("AC 11-13, 15-16: resolution preserves originals and storage, legacy remain
   const loaded = loadRequests(storage);
   assert.equal(loaded[0].priority, "Normal");
   assert.equal(requestStatus(loaded[0]), "active");
-  const fulfilled = resolveRequest(loaded, "legacy", "fulfilled");
-  const resolved = resolveRequest(fulfilled, "cancel", "canceled");
-  assert.deepEqual(resolved[0], { ...loaded[0], status: "fulfilled" });
-  assert.deepEqual(resolved[1], { ...loaded[1], status: "canceled" });
+  const actionTime = new Date("2026-10-18T18:30:00Z");
+  const fulfilled = resolveRequest(loaded, "legacy", "fulfilled", actionTime);
+  const resolved = resolveRequest(fulfilled, "cancel", "canceled", actionTime);
+  assert.deepEqual(resolved[0], { ...loaded[0], status: "fulfilled", resolvedAt: actionTime.toISOString() });
+  assert.deepEqual(resolved[1], { ...loaded[1], status: "canceled", resolvedAt: actionTime.toISOString() });
+  assert.deepEqual(resolveRequest(resolved, "legacy", "canceled"), resolved);
   assert.deepEqual(ids(selectRequests(resolved)), ["unavailable"]);
   saveRequests(resolved, storage);
   assert.deepEqual(loadRequests(storage), resolved);
