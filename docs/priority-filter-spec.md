@@ -24,7 +24,7 @@ Managers need a faster way to focus on equipment requests that need attention. T
 12. Provide a history view that identifies fulfilled and canceled requests. Request status and history persist after page refresh.
 13. Require requester name, department, equipment, a valid needed-by date, business reason, and a priority of High, Normal, or Low. Prevent incomplete submissions and identify the fields requiring attention. Preserve the existing Normal default.
 14. Allow duplicate requests because similar requests may represent separate needs.
-15. Unavailable equipment does not automatically remove a request from the attention list. The request remains active for manager follow-up.
+16. Unavailable equipment does not automatically remove a request from the attention list. The request remains active for manager follow-up.
 
 The date-range and search-matching details above are specification defaults used to make the user's requested date filter and search testable.
 
