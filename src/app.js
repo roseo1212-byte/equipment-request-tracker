@@ -33,7 +33,13 @@ let requests = loadRequests();
 filtersForm.addEventListener('submit', event => event.preventDefault());
 filtersForm.addEventListener('input', renderRequests);
 filtersForm.addEventListener('change', renderRequests);
-filtersForm.addEventListener('reset', () => queueMicrotask(renderRequests));
+filtersForm.addEventListener('reset', (event) => {
+  event.preventDefault();
+  for (const control of filtersForm.elements) {
+    if (control.name) control.value = "";
+  }
+  renderRequests();
+});
 window.addEventListener('focus', renderRequests);
 // Keep overdue labels current across midnight.
 setInterval(renderRequests, 60000);
