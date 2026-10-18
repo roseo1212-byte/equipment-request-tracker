@@ -94,7 +94,7 @@ h1 {
   border: 2px solid var(--purple);
 }
 
-.view-switcher button[aria-pressed="false"] {
+.view-switcher button[aria-pressed="true"] {
   color: var(--purple-dark);
   background: var(--surface);
 }
