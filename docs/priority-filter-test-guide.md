@@ -11,13 +11,11 @@ Action timestamps are now required: fulfill and cancel a fresh request, verify t
 
 ## Automated results
 
-All 14 tests pass with node --test, the exact command configured by npm test.
+All 15 tests pass with node --test, the exact command configured by npm test.
 The environment does not provide npm, so npm test itself could not be invoked.
 Both application modules pass node --check.
 
-Browser checks are pending: the in-app browser could not reach localhost, and
-the installed Edge browser exited during sandbox launch. Automated tests establish
-business and storage behavior but do not establish browser rendering or interaction.
+The user completed the guided browser walkthrough and confirmed acceptance criteria 1–17 passed. View switching, draft preservation, selected-button colors, single-click Clear filters, action timestamps, history sorting, keyboard controls, and narrow-screen usability were also confirmed. These browser results are user-reported; agent browser automation was unavailable.
 
 ## Acceptance criterion test mapping
 
@@ -28,23 +26,23 @@ seed local storage in that test profile or let a request's date pass.
 
 | AC | How to test | Verification |
 | --- | --- | --- |
-| 1 | Add Low due earlier than High; confirm Low appears first. | Automated sorting test passes; browser pending. |
-| 2 | Add High, Normal, Low due on the same day; confirm that order. | Automated sorting test passes; browser pending. |
-| 3 | Add two requests with matching date/priority; confirm oldest submission first. Exact ties retain source order. | Automated sorting test passes; browser pending. |
-| 4 | Inspect every priority label and compare High highlighting with Normal/Low. | Browser pending. |
-| 5 | Use yesterday, today, tomorrow; only yesterday is Overdue, and remains active until resolved. | Automated overdue test passes; label check pending. |
-| 6 | Select each priority and overdue choice; verify only matching active requests. | Automated filter test passes; browser pending. |
-| 7 | Filter inclusive start/end dates, each boundary alone, then reversed dates; verify visible error. | Automated range test passes; browser pending. |
-| 8 | Search partial requester and equipment names with mixed case and outer spaces. | Automated search test passes; browser pending. |
-| 9 | Combine every filter and search; verify AND matching and date-first order. | Automated combined filter test passes; browser pending. |
-| 10 | Search nonsense, see No matching requests, then Clear filters; compare stored data before/after. With no active requests, see No active requests. | Automated nonmutation/no-match checks pass; browser pending. |
-| 11 | Mark fulfilled; confirm removal and original details plus Fulfilled in Request history. | Automated transition test passes; browser pending. |
-| 12 | Cancel request; confirm removal and original details plus Canceled in Request history. | Automated transition test passes; browser pending. |
-| 13 | Refresh after both actions; verify active list and both history records. | Automated storage round-trip passes; browser pending. |
-| 14 | Submit blank fields or invalid date; verify field-specific guidance. Submit the same valid request twice; both remain. | Automated validation/duplicate tests pass; browser pending. |
-| 15 | Add an unavailable-equipment request; confirm it stays active until manually resolved. | Automated active-list test passes; browser pending. |
-| 16 | Load legacy records without priority/status; confirm Normal and active, original fields retained after saving. | Existing legacy and new storage tests pass; browser pending. |
-| 17 | Run npm test and perform the browser checks above. Tab through all controls and verify labels, focus indicators, action focus recovery, and narrow-screen usability. | 14 automated tests pass via node --test; browser and literal npm command pending. |
+| 1 | Add Low due earlier than High; confirm Low appears first. | Automated sorting test passes; user browser check passed. |
+| 2 | Add High, Normal, Low due on the same day; confirm that order. | Automated sorting test passes; user browser check passed. |
+| 3 | Add two requests with matching date/priority; confirm oldest submission first. Exact ties retain source order. | Automated sorting test passes; user browser check passed. |
+| 4 | Inspect every priority label and compare High highlighting with Normal/Low. | User browser check passed. |
+| 5 | Use yesterday, today, tomorrow; only yesterday is Overdue, and remains active until resolved. | Automated overdue test passes; user label check passed. |
+| 6 | Select each priority and overdue choice; verify only matching active requests. | Automated filter test passes; user browser check passed. |
+| 7 | Filter inclusive start/end dates, each boundary alone, then reversed dates; verify visible error. | Automated range test passes; user browser check passed. |
+| 8 | Search partial requester and equipment names with mixed case and outer spaces. | Automated search test passes; user browser check passed. |
+| 9 | Combine every filter and search; verify AND matching and date-first order. | Automated combined filter test passes; user browser check passed. |
+| 10 | Search nonsense, see No matching requests, then Clear filters; compare stored data before/after. With no active requests, see No active requests. | Automated nonmutation/no-match checks pass; user browser check passed. |
+| 11 | Mark fulfilled; confirm removal and original details plus Fulfilled in Request history. | Automated transition test passes; user browser check passed. |
+| 12 | Cancel request; confirm removal and original details plus Canceled in Request history. | Automated transition test passes; user browser check passed. |
+| 13 | Refresh after both actions; verify active list and both history records. | Automated storage round-trip passes; user browser check passed. |
+| 14 | Submit blank fields or invalid date; verify field-specific guidance. Submit the same valid request twice; both remain. | Automated validation/duplicate tests pass; user browser check passed. |
+| 15 | Add an unavailable-equipment request; confirm it stays active until manually resolved. | Automated active-list test passes; user browser check passed. |
+| 16 | Load legacy records without priority/status; confirm Normal and active, original fields retained after saving. | Existing legacy and new storage tests pass; user browser check passed. |
+| 17 | Run npm test and perform the browser checks above. Tab through all controls and verify labels, focus indicators, action focus recovery, and narrow-screen usability. | 15 automated tests pass via node --test; user browser checks passed; literal npm command unavailable in the agent environment. |
 
 ## Changed files
 
@@ -56,3 +54,4 @@ seed local storage in that test profile or let a request's date pass.
 - docs/priority-filter-test-guide.md: this verification guide.
 
 History sorting check: resolve two requests in sequence; the latest action appears first. Older undated entries appear last. Matching action dates use newest submission first. Automated coverage is in the history sorting test.
+
