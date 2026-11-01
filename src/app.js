@@ -4,7 +4,7 @@ import {
   createRequest,
   loadRequests,
   saveRequests,
-  localDate, isOverdue, requestStatus, selectRequests, selectHistory, validateFilters, resolveRequest,
+  isValidDate, localDate, isOverdue, requestStatus, selectRequests, selectHistory, validateFilters, resolveRequest,
 } from "./request-store.js";
 
 const form = document.querySelector("#request-form");
@@ -56,8 +56,9 @@ form.addEventListener("submit", (event) => {
 
   try {
     const request = createRequest(input);
-    requests = appendRequest(requests, request);
-    saveRequests(requests);
+    const updated = appendRequest(requests, request);
+    saveRequests(updated);
+    requests = updated;
     form.reset();
     neededByInput.min = localDate();
     setMessage("Request added.");
@@ -146,6 +147,7 @@ function createRequestRow(request, history = false) {
 }
 
 function formatDate(value) {
+  if (!isValidDate(value)) return "Invalid date";
   const [year, month, day] = value.split("-").map(Number);
   const date = new Date(year, month - 1, day);
   return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(date);
@@ -153,6 +155,7 @@ function formatDate(value) {
 
 function formatDateTime(value) {
   const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date not recorded";
   return new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
     timeStyle: "short",
