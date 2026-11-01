@@ -22,7 +22,7 @@ Managers need a faster way to focus on equipment requests that need attention. T
 10. When active requests exist but none match, display "No matching requests." When there are no active requests, display "No active requests."
 11. Each active request has "Mark fulfilled" and "Cancel request" buttons. Either action removes it from the attention list and stores it in history with the appropriate status, retaining its original request information.
 12. Provide a history view that identifies fulfilled and canceled requests. Record the action timestamp when an active request is fulfilled or canceled and display it in local date and time as "Fulfilled on" or "Canceled on." Existing history without a timestamp displays "Date not recorded"; do not invent historical dates. Status, timestamps, and history persist after page refresh. Sort history by newest action timestamp first, with missing or invalid action dates last. Break matching action timestamps, including missing dates, by newest submission first. Exact ties retain their existing relative order. History search is out of scope.
-13. Require requester name, department, equipment, a valid needed-by date, business reason, and a priority of High, Normal, or Low. Prevent incomplete submissions and identify the fields requiring attention. Preserve the existing Normal default.
+13. Require requester name, department, equipment, a valid needed-by date, business reason, and a priority of High, Normal, or Low. For new requests, the needed-by date must be today or a future date, using the current local calendar date. Reject past dates with field-specific guidance. This restriction applies only to new submissions: preserve existing requests when their dates pass and show them as overdue. Prevent incomplete submissions and identify the fields requiring attention. Preserve the existing Normal default.
 14. Allow duplicate requests because similar requests may represent separate needs.
 15. Unavailable equipment does not automatically remove a request from the attention list. The request remains active for manager follow-up.
 
@@ -47,7 +47,7 @@ The date-range and search-matching details above are specification defaults used
 2. Given requests with the same needed-by date, High appears before Normal, which appears before Low.
 3. Given requests with the same date and priority, the oldest submission appears first.
 4. Every active request displays its priority as text, and High requests have stronger visual highlighting.
-5. Given yesterday, today, and tomorrow as needed-by dates, only yesterday receives an "Overdue" label. It stays active until fulfilled or canceled.
+5. Given existing saved requests with yesterday, today, and tomorrow as needed-by dates, only yesterday receives an "Overdue" label. It stays active until fulfilled or canceled.
 6. Selecting a priority shows only active requests with that priority. Selecting Overdue or Not overdue shows only the corresponding active requests.
 7. Setting a date range includes requests on both boundary dates and excludes requests outside the range. A single boundary works independently. A reversed range produces a visible error.
 8. Searching with mixed case or surrounding whitespace finds matching requester names or equipment names using substring matching.
@@ -56,7 +56,7 @@ The date-range and search-matching details above are specification defaults used
 11. Selecting "Mark fulfilled" removes that request from the attention list and shows it in history as fulfilled with its original information.
 12. Selecting "Cancel request" removes that request from the attention list and shows it in history as canceled with its original information.
 13. After refreshing, active requests, their statuses, and history remain available and correct. Newly fulfilled/canceled requests show the appropriate action date and time, unchanged after refresh. Existing history without an action timestamp shows "Date not recorded." Resolving another request must not change earlier timestamps. Verify newest actions appear first, undated entries appear last, and submission time descending breaks ties.
-14. Missing required information prevents submission and produces field-specific guidance. Duplicate valid requests can both be submitted.
+14. Missing required information prevents submission and produces field-specific guidance. Duplicate valid requests can both be submitted. New requests dated today or later are accepted; a past needed-by date prevents submission and produces field-specific guidance. Existing requests that become overdue remain available.
 15. An active request for unavailable equipment remains visible unless a manager fulfills or cancels it; no availability lookup is required.
 16. Existing stored requests remain readable and retain their information, with Normal priority or active status supplied when those fields are absent.
 17. All acceptance criteria are checked, automated business and storage tests pass with `npm test`, and the changed behavior is verified in the browser before implementation is considered complete.
