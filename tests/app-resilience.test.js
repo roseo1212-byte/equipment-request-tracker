@@ -13,23 +13,25 @@ class Element {
   querySelector() { return new Element(); }
   replaceChildren(...children) { this.children = children; }
   append(child) { this.children.push(child); }
+  after() {}
   focus() {}
   reset() { this.wasReset = true; }
 }
 class ElementControl { setAttribute() {} }
-function harness({ records = [], failSave = false } = {}) {
+function harness({ records = [], failSave = false, submission = input } = {}) {
   const elements = new Map();
   const element = id => { if (!elements.has(id)) elements.set(id, new Element()); return elements.get(id); };
   const storage = { value: JSON.stringify(records), getItem() { return this.value; }, setItem(key, value) {
     if (failSave) throw new Error("Storage unavailable");
     this.value = value;
   }};
+  element("#request-form").elements.neededBy = Object.assign(new Element(), { id: "needed-by" });
   const context = vm.createContext({
     ...store, loadRequests: () => store.loadRequests(storage), saveRequests: list => store.saveRequests(list, storage),
     document: { querySelector: element, createElement: () => new Element() },
     window: { addEventListener() {} }, setInterval() {}, console: { error() {} },
     FormData: class { constructor(form) { this.form = form; } entries() {
-      return Object.entries(this.form === element("#request-form") ? input : {});
+      return Object.entries(this.form === element("#request-form") ? submission : {});
     }},
   });
   vm.runInContext(source.replace(/^import\s*\{[\s\S]*?\}\s*from\s*"\.\/request-store.js";/, ""), context);
@@ -62,4 +64,15 @@ test("damaged saved dates do not stop active or history rows rendering or rewrit
   const historyRow = h.element("#history-table-body").children[0];
   assert.equal(historyRow.children[8].textContent, "Date not recorded");
   assert.deepEqual(JSON.parse(h.storage.value), [active, history]);
+});
+
+test("new submissions reject yesterday and accept today and tomorrow", () => {
+  for (const offset of [-1, 0, 1]) {
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+    const h = harness({ submission: { ...input, neededBy: store.localDate(date) } });
+    h.element("#request-form").listeners.submit({ preventDefault() {} });
+    assert.equal(JSON.parse(h.storage.value).length, offset < 0 ? 0 : 1);
+    if (offset < 0) assert.match(h.element("#form-message").textContent, /highlighted fields/);
+  }
 });
