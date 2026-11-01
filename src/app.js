@@ -55,6 +55,9 @@ form.addEventListener("submit", (event) => {
   const input = Object.fromEntries(new FormData(form).entries());
 
   try {
+    if (isValidDate(input.neededBy) && input.neededBy < localDate()) {
+      throw new RequestValidationError({ neededBy: "Choose today or a future date." });
+    }
     const request = createRequest(input);
     const updated = appendRequest(requests, request);
     saveRequests(updated);
